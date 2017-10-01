@@ -10,7 +10,9 @@
 #import "BNRHypnosisView.h"
 
 @interface ViewController ()
+<UIScrollViewDelegate>
 
+@property BNRHypnosisView *hypnosisView;
 @end
 
 @implementation ViewController
@@ -34,19 +36,22 @@
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:screenRect];
     [self.view addSubview:scrollView];
     
+    self.hypnosisView = [[BNRHypnosisView alloc] initWithFrame:screenRect];
     // Create a supersized hypnosis view and add to scrollview
-    BNRHypnosisView *hypnosisView = [[BNRHypnosisView alloc] initWithFrame:screenRect];
-    [scrollView addSubview:hypnosisView];
+    [scrollView addSubview:self.hypnosisView];
 
-    
+
     screenRect.origin.x += screenRect.size.width;
     BNRHypnosisView *hypnosisView2 = [[BNRHypnosisView alloc] initWithFrame:screenRect];
-    [scrollView addSubview:hypnosisView2];
+//    [scrollView addSubview:hypnosisView2]; // removed to optimize pinchtozoom
     
-    scrollView.pagingEnabled = YES;
+    scrollView.pagingEnabled = NO;
+    scrollView.minimumZoomScale = 0.5;
+    scrollView.maximumZoomScale = 6;
     
     // Tell scrollview how big its content area is
     scrollView.contentSize = bigRect.size;
+    scrollView.delegate = self;
     
 //    CGRect secondFrame = CGRectMake(20, 30, 50, 50);
 //    BNRHypnosisView *secondView = [[BNRHypnosisView alloc] initWithFrame:secondFrame];
@@ -57,6 +62,9 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return self.hypnosisView;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -1,15 +1,16 @@
 //
 //  AppDelegate.m
-//  Hypnosister
+//  Homepwner
 //
-//  Created by Tash-had Saqif on 2017-09-04.
+//  Created by Tash-had Saqif on 2017-09-11.
 //  Copyright © 2017 Tash-had Saqif. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import "BNRHypnosisView.h"
+#import "BNRItemsViewController.h"
 
 @interface AppDelegate ()
+
 @end
 
 @implementation AppDelegate
@@ -17,7 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
+    BNRItemsViewController *itemsViewController = [[BNRItemsViewController alloc] init];
+    self.window.rootViewController = itemsViewController;
     return YES;
 }
 

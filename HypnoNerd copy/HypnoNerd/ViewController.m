@@ -38,7 +38,7 @@
     sControl.backgroundColor = [UIColor whiteColor];
     // set the backgroundView as the view for this controller
     self.view = self.backgroundView;
-    [self.backgroundView addSubview:sControl];
+    [self.view addSubview:sControl];
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
