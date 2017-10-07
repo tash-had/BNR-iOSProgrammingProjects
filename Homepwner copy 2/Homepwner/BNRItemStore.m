@@ -11,6 +11,7 @@
 
 @interface BNRItemStore()
 @property (nonatomic) NSMutableArray *privateItems;
+@property (nonatomic) NSUInteger lastRowLastIndex;
 @end
 
 @implementation BNRItemStore
@@ -22,6 +23,8 @@
     // Do I need  I need to create a shared store?
     if (!sharedStore){
         sharedStore = [[self alloc] initPrivate];
+        [sharedStore.privateItems addObject:@"No More Items!"];
+        sharedStore.lastRowLastIndex = 0;
     }
     return sharedStore;
 }
@@ -33,11 +36,17 @@
 }
 - (instancetype)initPrivate{
     self = [super init];
-    
     if (self){
         _privateItems = [[NSMutableArray alloc] init];
     }
     return self;
+}
+
+- (void)changeLastRowToIndex:(int)newIndex{
+    self.lastRowLastIndex = newIndex;
+}
+- (NSUInteger)getLastRow{
+    return self.lastRowLastIndex;
 }
 - (NSArray *)allItems{
     return self.privateItems;

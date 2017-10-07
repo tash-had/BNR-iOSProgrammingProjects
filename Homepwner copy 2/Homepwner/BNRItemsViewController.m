@@ -77,8 +77,22 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
-    
     [[BNRItemStore sharedStore] moveItemAtIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath{
+    NSInteger lastRowIndex = [[BNRItemStore sharedStore] getLastRow];
+    NSIndexPath *newDestination = proposedDestinationIndexPath;
+    if (sourceIndexPath.row == lastRowIndex){
+        newDestination = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+    }else if (proposedDestinationIndexPath.row == lastRowIndex){
+        newDestination = sourceIndexPath;
+    }
+    return newDestination;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @"Remove";
 }
 - (IBAction)addNewItem:(id)sender{
 //    NSInteger lastRow = [self.tableView numberOfRowsInSection:0];
@@ -91,6 +105,13 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:lastRow inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
     
+    NSInteger lastRowFixedOld = [[BNRItemStore sharedStore] getLastRow];
+    NSIndexPath *lastRowFixedOldIndexPath = [NSIndexPath indexPathForRow:lastRowFixedOld inSection:0];
+    
+    NSInteger lastRowFixed = [[[BNRItemStore sharedStore] allItems] count] - 1;
+    NSIndexPath *lastRowFixedIndexPath = [NSIndexPath indexPathForRow:lastRowFixed inSection:0];
+    [self.tableView moveRowAtIndexPath:lastRowFixedOldIndexPath toIndexPath:lastRowFixedIndexPath];
+    [[BNRItemStore sharedStore] changeLastRowToIndex:lastRowFixed];
 }
 - (IBAction)toggleEditingMode:(id)sender{
     // If you are currently in editing mode..

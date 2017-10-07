@@ -17,4 +17,6 @@
 - (void)removeItem:(BNRItem *)item;
 - (void)moveItemAtIndex:(NSUInteger)fromIndex
                 toIndex:(NSUInteger)toIndex;
+- (void)changeLastRowToIndex:(int) index;
+- (NSUInteger)getLastRow;
 @end
